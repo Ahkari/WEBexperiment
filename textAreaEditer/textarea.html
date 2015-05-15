@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>文本输入控制</title>
+    <style>
+        .wrap{margin: 0px auto;width:600px;background: #cdcdcd;}
+        .text{width:300px;height:100px;display:block;}
+        button{display:block;}
+        .editable{width:300px;height:150px;background: #fefefe;}
+        #textareaWrap{width:500px;height:100px;background: #ffffff;margin:5px;}
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <span>@</span>&nbsp;<span>&</span>&nbsp;<span>|</span>
+    <div id="textareaWrap">
+        <input id="textareaInput" />
+
+    </div>
+    <p>
+        @同义词
+    </p>
+    <p>
+        &近义词
+    </p>
+    <p>
+        什么什么词
+    </p>
+    <textarea class="text" >
+        
+
+    </textarea>
+
+    <button class="changeColor">修改选中颜色</button>
+    <button class="deleteSelect">删除选中字符</button>
+    <button class="changeHTMLTag">改变指定标签</button>
+    <button class="deleteHTMLTag">删除插入光标所在文本块的块级格式</button>
+    <button class="selectAllWord">选中所有文本</button>
+
+    <div class="editable" id="richedit" contenteditable></div>
+
+</div>
+<script src="./jquery.js" type="text/javascript"></script>
+<script>
+    var div = document.getElementById('richedit');
+    div.contentEditable = "true";
+
+</script>
+<script src="./textarea.js" type="text/javascript" ></script>
+</body>
+</html>
