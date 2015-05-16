@@ -4,21 +4,38 @@
     <meta charset="UTF-8" />
     <title>文本输入控制</title>
     <style>
+    	*{margin:0px;padding:0px;}
         .wrap{margin: 0px auto;width:600px;background: #cdcdcd;}
         .text{width:300px;height:100px;display:block;}
         button{display:block;}
+        #richWrap span{cursor: pointer;}
+        #richWrap span:hover{color: lightblue;}
         .editable{width:300px;height:150px;background: #fefefe;}
         #textareaWrap{width:500px;height:100px;background: #ffffff;margin:5px;}
+
+        .blockWrod{
+        	color: blue;
+        }
+        #textareaInput{
+        	border:none;
+        	outline-offset: 0px;
+        	/*outline:none;*/
+
+        }
 
     </style>
 </head>
 <body>
 <div class="wrap">
-    <span>@</span>&nbsp;<span>&</span>&nbsp;<span>|</span>
-    <div id="textareaWrap">
-        <input id="textareaInput" />
+	<div id="richWrap">
+	    <span>@</span>&nbsp;<span>&</span>&nbsp;<span>|</span>
+	    <div id="textareaWrap">
 
-    </div>
+	        <input id="textareaInput" data-id="0" />
+	    
+	        <input id="textDomFlag" style="display:none;" value=0 />
+	    </div>
+	</div>
     <p>
         @同义词
     </p>
@@ -49,5 +66,6 @@
 
 </script>
 <script src="./textarea.js" type="text/javascript" ></script>
+<script type="text/javascript" src="./textareaConl.js"></script>>
 </body>
 </html>
