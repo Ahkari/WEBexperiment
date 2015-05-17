@@ -18,27 +18,31 @@ $('#textareaInput').keyup(function(event){
 	$(this).width(textWidth($(this).val()));//自适应宽度,需要加的地方其二
 
 	if(blockWord.test(currentValue) === true ){ //正则匹配时开始操作
-		var inputResult = blockWord.exec(currentValue)[0]; //匹配的第一个值(按逻辑当前只有一个)
-		var searchResult = inputResult.slice(1,inputResult.length-1); //匹配的值
+		var inputResult = blockWord.exec(currentValue); //匹配的第一个值(按逻辑当前只有一个)
+		var searchResult = inputResult[0].slice(1,inputResult[0].length-1); //匹配的值
 		var indexDivision = blockWord.exec(currentValue).index; //开始匹配的位置
 		var commonResult = blockWord.exec(currentValue).input.slice(0,indexDivision) ; //在匹配之前的正常字符们
+		var commonResultAfter = blockWord.exec(currentValue).input.slice(indexDivision+inputResult[0].length) ; //在匹配之后的正常字符,检测到终止符时将他们放入下一个input框中
+		
+		//console.log(commonResultAfter);
 		// console.log(blockWord.exec(currentValue));//当前正则匹配结果
 		// console.log(inputResult);	//@word|
 		// console.log(searchResult);	//word
 		// console.log(commonResult);	//@前面的值
-		
 
 		if (commonResult!==''){ //如果存在普通字符
 			var commonDomText = "<span id='domText"+$('#textDomFlag').val()+"' class='commonWrod'>"+commonResult+"</span>";//正常字符dom元素
 			$('#textDomFlag').val(parseInt($('#textDomFlag').val())+1);//全局值+1
 			$input.data('id',$input.data('id')+1);//input数值加1
 			$input.before(commonDomText);//普通字符插入
+
 		}
+
 		var blockDomText = "<span id='domText"+$('#textDomFlag').val()+"' class='blockWrod'>"+inputResult+"</span>";//块状字符dom元素
 		$('#textDomFlag').val(parseInt($('#textDomFlag').val())+1);//全局值+1
 		$input.data('id',$input.data('id')+1);//input数值加1
 		$input.before(blockDomText) ;//块状字符插入
-		$input.val(''); //当前输入框清空
+		$input.val(commonResultAfter); //当前输入框为终止符之后的值
 
 
 		/*
@@ -71,6 +75,50 @@ $('#textareaInput').keyup(function(event){
 
 });
 
+
+/*兼容原有数值,将原有文本转换成dom编辑模式*/
+$('.wordShow').on('click',function(event){
+	var recentValue = $('.text').val();
+	var blockWordNotGlobal = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/;//非全局正则
+	var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/g ;//匹配@数字or英文or中文|,设置全局标志g,循环匹配
+	var inputResult = []; //匹配的第一个值(按逻辑当前只有一个)
+	var startIndex = 0;
+	var endIndex = recentValue.length; //value长度
+	var idFlag = 0;//dom元素标记值
+	while (blockWordNotGlobal.test(recentValue.slice(startIndex,endIndex))){
+		inputResult = blockWord.exec(recentValue);
+		console.log(inputResult.index);
+		console.log(inputResult.input);
+		console.log(inputResult[0]);
+		
+		//console.log(inputResult.lastIndex);
+		if (startIndex !== inputResult.index){
+			var commonResult = recentValue.slice(startIndex,inputResult.index); //正常字符
+			var commonDomText = "<span id='domText"+idFlag+"' class='commonWrod'>"+commonResult+"</span>";//正常字符dom元素
+			idFlag++;//计数器数值加1
+			//$('#textareaWrap').append(commonDomText);//普通字符插入
+			$('#textareaInput').before(commonDomText);//普通字符插入
+		}
+		
+		startIndex = blockWord.lastIndex;//设置下次开始正则匹配的位置
+		console.log(startIndex);
+		
+		var inputResult = recentValue.slice(inputResult.index,startIndex);
+		var blockDomText = "<span id='domText"+idFlag+"' class='blockWrod'>"+inputResult+"</span>";//块状字符dom元素
+		idFlag++;//计数器数值加1
+		//$('#textareaWrap').append(blockDomText);//块状字符插入
+		$('#textareaInput').before(blockDomText);//普通字符插入
+		
+	}
+	if (startIndex !== endIndex){
+		var commonResult = recentValue.slice(startIndex,endIndex); //正常字符
+		var commonDomText = "<span id='domText"+idFlag+"' class='commonWrod'>"+commonResult+"</span>";//正常字符dom元素
+		idFlag++;//计数器数值加1
+		//$('#textareaWrap').append(commonDomText);//普通字符插入
+		$('#textareaInput').before(commonDomText);//普通字符插入
+	}
+
+})
 
 
 /* 工具函数	*/

@@ -6,7 +6,7 @@
     <style>
     	*{margin:0px;padding:0px;}
         .wrap{margin: 0px auto;width:600px;background: #cdcdcd;}
-        .text{width:300px;height:100px;display:block;}
+        .text{width:300px;height:30px;display:block;}
         button{display:block;}
         #richWrap span{cursor: pointer;}
         #richWrap span:hover{color: lightblue;}
@@ -28,7 +28,7 @@
 <body>
 <div class="wrap">
 	<div id="richWrap">
-	    <span>@</span>&nbsp;<span>&</span>&nbsp;<span>|</span>
+	    <span>@同义词</span>&nbsp;<span>&集合词</span>&nbsp;<span>|终止符</span>
 	    <div id="textareaWrap">
 
 	        <input id="textareaInput" data-id="0" />
@@ -36,25 +36,10 @@
 	        <input id="textDomFlag" style="display:none;" value=0 />
 	    </div>
 	</div>
-    <p>
-        @同义词
-    </p>
-    <p>
-        &近义词
-    </p>
-    <p>
-        什么什么词
-    </p>
-    <textarea class="text" >
-        
 
-    </textarea>
+    <input class="text" />  
+    <button class="wordShow">点击将原数据转化成指定格式</button>
 
-    <button class="changeColor">修改选中颜色</button>
-    <button class="deleteSelect">删除选中字符</button>
-    <button class="changeHTMLTag">改变指定标签</button>
-    <button class="deleteHTMLTag">删除插入光标所在文本块的块级格式</button>
-    <button class="selectAllWord">选中所有文本</button>
 
     <div class="editable" id="richedit" contenteditable></div>
 
