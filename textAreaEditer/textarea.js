@@ -72,12 +72,14 @@ $('#textareaInput').keyup(function(event){
 		}
 	}
 
+    console.log($input.data('id'));
 
 });
 
 
 /*兼容原有数值,将原有文本转换成dom编辑模式*/
 $('.wordShow').on('click',function(event){
+    var $input = $('#textareaInput');
 	var recentValue = $('.text').val();
 	var blockWordNotGlobal = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/;//非全局正则
 	var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/g ;//匹配@数字or英文or中文|,设置全局标志g,循环匹配
@@ -87,36 +89,42 @@ $('.wordShow').on('click',function(event){
 	var idFlag = 0;//dom元素标记值
 	while (blockWordNotGlobal.test(recentValue.slice(startIndex,endIndex))){
 		inputResult = blockWord.exec(recentValue);
-		console.log(inputResult.index);
-		console.log(inputResult.input);
-		console.log(inputResult[0]);
 		
+        //console.log(inputResult.index);
+		//console.log(inputResult.input);
+		//console.log(inputResult[0]);
 		//console.log(inputResult.lastIndex);
-		if (startIndex !== inputResult.index){
+		
+        if (startIndex !== inputResult.index){
 			var commonResult = recentValue.slice(startIndex,inputResult.index); //正常字符
 			var commonDomText = "<span id='domText"+idFlag+"' class='commonWrod'>"+commonResult+"</span>";//正常字符dom元素
 			idFlag++;//计数器数值加1
+            $input.data('id',$input.data('id')+1);//input数值加1
 			//$('#textareaWrap').append(commonDomText);//普通字符插入
-			$('#textareaInput').before(commonDomText);//普通字符插入
+			$input.before(commonDomText);//普通字符插入
 		}
 		
 		startIndex = blockWord.lastIndex;//设置下次开始正则匹配的位置
-		console.log(startIndex);
+		//console.log(startIndex);
 		
 		var inputResult = recentValue.slice(inputResult.index,startIndex);
 		var blockDomText = "<span id='domText"+idFlag+"' class='blockWrod'>"+inputResult+"</span>";//块状字符dom元素
 		idFlag++;//计数器数值加1
+        $input.data('id',$input.data('id')+1);//input数值加1
 		//$('#textareaWrap').append(blockDomText);//块状字符插入
-		$('#textareaInput').before(blockDomText);//普通字符插入
+		$input.before(blockDomText);//普通字符插入
 		
 	}
 	if (startIndex !== endIndex){
 		var commonResult = recentValue.slice(startIndex,endIndex); //正常字符
 		var commonDomText = "<span id='domText"+idFlag+"' class='commonWrod'>"+commonResult+"</span>";//正常字符dom元素
 		idFlag++;//计数器数值加1
+        $input.data('id',$input.data('id')+1);//input数值加1
 		//$('#textareaWrap').append(commonDomText);//普通字符插入
-		$('#textareaInput').before(commonDomText);//普通字符插入
+		$input.before(commonDomText);//普通字符插入
 	}
+    
+    //console.log($input.data('id'));
 
 })
 

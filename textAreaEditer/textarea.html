@@ -10,7 +10,7 @@
         button{display:block;}
         #richWrap span{cursor: pointer;}
         #richWrap span:hover{color: lightblue;}
-        .editable{width:300px;height:150px;background: #fefefe;}
+        .editable{width:500px;height:150px;background: #fefefe;}
         #textareaWrap{width:500px;height:100px;background: #ffffff;margin:5px;}
 
         .blockWrod{
@@ -28,7 +28,7 @@
 <body>
 <div class="wrap">
 	<div id="richWrap">
-	    <span>@同义词</span>&nbsp;<span>&集合词</span>&nbsp;<span>|终止符</span>
+	    <span>@同义词</span>&nbsp;<span>&集合词</span>&nbsp;<span>$</span>&nbsp;<span>!</span>&nbsp;<span>|</span>&nbsp;<span>空格作为终止符</span>
 	    <div id="textareaWrap">
 
 	        <input id="textareaInput" data-id="0" />
@@ -40,8 +40,11 @@
     <input class="text" />  
     <button class="wordShow">点击将原数据转化成指定格式</button>
 
-
-    <div class="editable" id="richedit" contenteditable></div>
+    contenteditable属性方式实现富文本编辑
+    <div class="editable" id="richedit" contenteditable>
+        <!-- <span>hello</span><span>lily</span><span>!</span> -->
+        <span id="mainSpan">请输入文字</span>
+    </div>
 
 </div>
 <script src="./jquery.js" type="text/javascript"></script>
