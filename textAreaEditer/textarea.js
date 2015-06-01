@@ -8,21 +8,28 @@ $('#textareaInput').keydown(function(event){
 	$(this).width(textWidth($(this).val()));//自适应宽度,需要加的地方其一	
 });
 
+/*键出事件*/
+//子事件: 检测终止符,块化元素
+//检测Backspace,删除退格键之前的块状元素或内容
 $('#textareaInput').keyup(function(event){
 	var $input = $(event.currentTarget);//当前input 
     var code = event.which;//当前键值
     currentValue = $('#textareaInput').val();//当前input值
 	//var blockWord = /@\w+\|/ ;//正则匹配@开头 |结尾的数字与字符
-	var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/ ;//匹配数字英文和中文
+	// /[@&$!|][\u4E00-\u9FA5A-Za-z0-9_]+\s/g 
+	//var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/ ;//匹配数字英文和中文
+	//var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+[@&$!|\s]/ ;//匹配数字英文和中文
+	var blockWord = /[@$][^@&$!|\s]+[@&$!|\s]/ ;//匹配非@ & $ ! 空格以外的所有东西
 
 	$(this).width(textWidth($(this).val()));//自适应宽度,需要加的地方其二
 
 	if(blockWord.test(currentValue) === true ){ //正则匹配时开始操作
-		var inputResult = blockWord.exec(currentValue); //匹配的第一个值(按逻辑当前只有一个)
+		var inputResult = blockWord.exec(currentValue); //匹配的第一个值(按逻辑当前只有一个),数组
+			//inputResult = inputResult.subString(0,inputResult.length-1); //要变成块状的部分
 		var searchResult = inputResult[0].slice(1,inputResult[0].length-1); //匹配的值
 		var indexDivision = blockWord.exec(currentValue).index; //开始匹配的位置
 		var commonResult = blockWord.exec(currentValue).input.slice(0,indexDivision) ; //在匹配之前的正常字符们
-		var commonResultAfter = blockWord.exec(currentValue).input.slice(indexDivision+inputResult[0].length) ; //在匹配之后的正常字符,检测到终止符时将他们放入下一个input框中
+		var commonResultAfter = blockWord.exec(currentValue).input.slice(indexDivision+inputResult[0].length-1) ; //在匹配之后的正常字符,检测到终止符时将他们放入下一个input框中
 		
 		//console.log(commonResultAfter);
 		// console.log(blockWord.exec(currentValue));//当前正则匹配结果
@@ -38,7 +45,7 @@ $('#textareaInput').keyup(function(event){
 
 		}
 
-		var blockDomText = "<span id='domText"+$('#textDomFlag').val()+"' class='blockWrod'>"+inputResult+"</span>";//块状字符dom元素
+		var blockDomText = "<span id='domText"+$('#textDomFlag').val()+"' class='blockWrod'>"+inputResult[0].substring(0,inputResult[0].length-1)+"</span>";//块状字符dom元素
 		$('#textDomFlag').val(parseInt($('#textDomFlag').val())+1);//全局值+1
 		$input.data('id',$input.data('id')+1);//input数值加1
 		$input.before(blockDomText) ;//块状字符插入
@@ -77,12 +84,16 @@ $('#textareaInput').keyup(function(event){
 });
 
 
+
+
 /*兼容原有数值,将原有文本转换成dom编辑模式*/
 $('.wordShow').on('click',function(event){
     var $input = $('#textareaInput');
 	var recentValue = $('.text').val();
-	var blockWordNotGlobal = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/;//非全局正则
-	var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/g ;//匹配@数字or英文or中文|,设置全局标志g,循环匹配
+	//var blockWordNotGlobal = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/;//非全局正则
+	//var blockWord = /@[\u4E00-\u9FA5A-Za-z0-9_]+\|/g ;//匹配@数字or英文or中文|,设置全局标志g,循环匹配
+	var blockWordNotGlobal = /[@$][^@&$!|\s]+[@&$!|\s]/ ;//匹配非@ & $ ! 空格以外的所有东西,非全局
+	var blockWord = /[@$][^@&$!|\s]+[@&$!|\s]/g ;//匹配非@ & $ ! 空格以外的所有东西
 	var inputResult = []; //匹配的第一个值(按逻辑当前只有一个)
 	var startIndex = 0;
 	var endIndex = recentValue.length; //value长度
@@ -104,7 +115,7 @@ $('.wordShow').on('click',function(event){
 			$input.before(commonDomText);//普通字符插入
 		}
 		
-		startIndex = blockWord.lastIndex;//设置下次开始正则匹配的位置
+		startIndex = blockWord.lastIndex-1;//设置下次开始正则匹配的位置
 		//console.log(startIndex);
 		
 		var inputResult = recentValue.slice(inputResult.index,startIndex);

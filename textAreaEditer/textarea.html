@@ -8,18 +8,30 @@
         .wrap{margin: 0px auto;width:600px;background: #cdcdcd;}
         .text{width:300px;height:30px;display:block;}
         button{display:block;}
-        #richWrap span{cursor: pointer;}
-        #richWrap span:hover{color: lightblue;}
+        /*#richWrap span{cursor: pointer;}*/
+        /*#richWrap span:hover{color: lightblue;}*/
         .editable{width:500px;height:150px;background: #fefefe;}
         #textareaWrap{width:500px;height:100px;background: #ffffff;margin:5px;}
-
+        .commonWrod{
+            
+        }
         .blockWrod{
         	color: blue;
+            cursor: default;
+        }
+        .blockWrod:hover{
+            color: lightblue;
+            cursor: default;
         }
         #textareaInput{
         	border:none;
         	outline-offset: 0px;
         	/*outline:none;*/
+
+        }
+        #textareaInput:focus{
+            outline: none;
+            /*outline:none;*/
 
         }
 
@@ -28,32 +40,44 @@
 <body>
 <div class="wrap">
 	<div id="richWrap">
-	    <span>@同义词</span>&nbsp;<span>&集合词</span>&nbsp;<span>$</span>&nbsp;<span>!</span>&nbsp;<span>|</span>&nbsp;<span>空格作为终止符</span>
+	    <span>@同义词</span>&nbsp;<span>&集合词</span>&nbsp;<span>$</span>&nbsp;<span>!</span>&nbsp;<span>|</span>&nbsp;<span id="onclickTest">空格作为终止符</span>
 	    <div id="textareaWrap">
-
-	        <input id="textareaInput" data-id="0" />
+            <div id="textareaInput" contenteditable="true" style='display:inline-block;border:0px'>请输入</div>
+	        <!-- <input id="textareaInput" data-id="0" /> -->
 	    
 	        <input id="textDomFlag" style="display:none;" value=0 />
 	    </div>
 	</div>
-
+    <div>  
+    DIV:  
+        <div id="msgdiv" style="border:1px #f00 solid; width:300px; height:100px;" contenteditable="true">这是测试<span class="red">hello</span></div>  
+    </div>
+    <div>  
+        <button onclick="test1()">光标事件</button>  
+    </div>
     <input class="text" />  
     <button class="wordShow">点击将原数据转化成指定格式</button>
 
     contenteditable属性方式实现富文本编辑
     <div class="editable" id="richedit" contenteditable>
         <!-- <span>hello</span><span>lily</span><span>!</span> -->
-        <span id="mainSpan">请输入文字</span>
+        <span id="mainSpan"></span>
+    </div>
+    <div id="richedit2" style="width:200px;height:100px">
+        <!-- <span>hello</span><span>lily</span><span>!</span> -->
+        <div id="editDiv" contenteditable style='display:inline-block'></div>
+        <span>2222</span>
     </div>
 
 </div>
 <script src="./jquery.js" type="text/javascript"></script>
 <script>
-    var div = document.getElementById('richedit');
-    div.contentEditable = "true";
-
+    $('#editDiv').html(' ');
+    $('#richedit2').on('click',function(){
+        $('#editDiv').focus();
+    })
 </script>
-<script src="./textarea.js" type="text/javascript" ></script>
+<script src="./richEdit.js" type="text/javascript" ></script>
 <script type="text/javascript" src="./textareaConl.js"></script>>
 </body>
 </html>
